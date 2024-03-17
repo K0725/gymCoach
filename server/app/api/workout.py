@@ -1,16 +1,23 @@
-from fastapi import APIRouter, Depends
+from fastapi import FastAPI
+from pydantic import BaseModel
 from app.utils.openai import generate_workout_suggestions
-from app.utils.auth import get_current_user  # Import authentication utility (if needed)
+from app.utils.supabase import supabase
 
-router = APIRouter()
+app = FastAPI()
 
-@router.post("/")
-async def get_workout(user_input: str, current_user=Depends(get_current_user)):
-    workout_suggestions = generate_workout_suggestions(user_input)
-    return {"workout_suggestions": workout_suggestions}
+class Workout(BaseModel):
+    workout_area: str
 
-@router.get("/")
-async def get_workout_history(current_user=Depends(get_current_user)):
-    # Retrieve workout history from the database
-    workout_history = []
-    return {"workout_history": workout_history}
+@app.post("/api/workouts")
+async def create_workout(workout: Workout):
+    suggestions = generate_workout_suggestions(workout.workout_area)
+    data = supabase.table("messages").insert(
+        {"workout_area": workout.workout_area, "suggestion": suggestions}
+    ).execute()
+    return {"workout_area": workout.workout_area, "suggestion": suggestions}
+
+@app.get("/api/workouts")
+async def get_workout_history():
+    data = supabase.table("messages").select("*").execute()
+    messages = data.data
+    return messages

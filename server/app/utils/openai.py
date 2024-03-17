@@ -3,16 +3,16 @@ from app.config import OPENAI_API_KEY
 
 openai.api_key = OPENAI_API_KEY
 
-def generate_workout_suggestions(user_input: str):
-    prompt = f"Generate a list of workout exercises for {user_input.lower()} with the following format:\n\nExercise Name: <exercise_name>\nBody Parts Targeted: <body_parts>\nPercentage of Muscle Growth: <percentage>\n\n"
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=500,
-        n=1,
-        stop=None,
-        temperature=0.7,
+def generate_workout_suggestions(workout_area: str):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Gym Coach"},
+            {"role": "user", "content": f"I need a workout plan for {workout_area}. Can you provide 3 core workout and its target muscle?"},
+        ]
     )
 
-    workout_suggestions = response.choices[0].text.strip()
-    return workout_suggestions
+    # Extract the assistant's reply
+    suggestions = response['choices'][0]['message']['content']
+
+    return suggestions

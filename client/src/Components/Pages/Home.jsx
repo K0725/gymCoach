@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import NavBar from './NavBar';
+import axios from 'axios';
+
 import { Center, Input, Button, VStack, Box } from '@chakra-ui/react';
 
 const Home = () => {
@@ -9,11 +11,17 @@ const Home = () => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  // async function it is a function that returns a promise
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
-    // handling the input value such as 
-  };
+    console.log('Submitting form with input:', input);
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/workouts', {workout_area: input});
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error creating workout:', error);
+    }
+};
 
 return (
     <>
