@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, VStack, Heading, Text, Input, Button } from '@chakra-ui/react';
+import NavBar from './NavBar';
 import axios from 'axios';
 
 const ChatPage = ({ initialWorkoutData }) => {
@@ -36,6 +37,7 @@ const ChatPage = ({ initialWorkoutData }) => {
 
   return (
     <Box height="100vh" display="flex" flexDirection="column">
+      
       <Heading as="h2" size="lg" textAlign="center" bg="gray.100" p={4}>
         GymGPT Chat
       </Heading>

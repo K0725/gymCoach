@@ -9,6 +9,7 @@ const ChatHistory = () => {
     - Fetch workout history from the server when the component mounts.
     - callback is called after the component is mounted.
   */
+ 
   useEffect(() => {
     const fetchWorkoutHistory = async () => {
       try {

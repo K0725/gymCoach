@@ -24,9 +24,9 @@ const Home = () => {
         { headers: { 'Content-Type': 'application/json' } }
       );
       console.log(response.data);
-      setWorkoutData(response.data); // Store the response data in state
+      setWorkoutData(response.data);
     } catch (error) {
-      console.error('Error creating workout:', error.response.data);
+      console.error('Error creating workout:', error.response.data.detail[0]);
     }
   };
 
