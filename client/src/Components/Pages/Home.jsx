@@ -14,15 +14,20 @@ const Home = () => {
   // async function it is a function that returns a promise
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting form with input:', input);
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/workouts', {workout_area: input});
-        console.log(response.data);
+      const requestData = { workout_area: input };
+      console.log('Request Data:', requestData);
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/workouts/',
+        requestData,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      console.log(response.data);
     } catch (error) {
-        console.error('Error creating workout:', error);
+      console.error('Error creating workout:', error.response.data.detail[0]);
     }
-};
-
+  };
+  
 return (
     <>
         <NavBar/>
